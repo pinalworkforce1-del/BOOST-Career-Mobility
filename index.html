@@ -959,7 +959,7 @@ K.forEach(k=>{
  });
 });
 $('restartChoices').onclick=()=>{$('results').classList.add('hidden');$('decision').scrollIntoView({behavior:'smooth'})};
-$('makeReport').onclick=makeReport;$('printBtn').onclick=()=>window.print();$('editBtn').onclick=()=>{$('reportSection').classList.add('hidden');$('results').scrollIntoView({behavior:'smooth'})};
+$('makeReport').onclick=()=>{makeReport();boostOfferCompletion('module3',$('reportSection'))};$('printBtn').onclick=()=>window.print();$('editBtn').onclick=()=>{$('reportSection').classList.add('hidden');$('results').scrollIntoView({behavior:'smooth'})};
 
 
 
@@ -981,4 +981,16 @@ $('makeReport').onclick=makeReport;$('printBtn').onclick=()=>window.print();$('e
   }
   if(cont) cont.addEventListener('click',()=>document.querySelector('.panel.noPrint')?.scrollIntoView({behavior:'smooth',block:'start'}));
 })();
+
+function boostOfferCompletion(moduleId,mount){
+ const p=new URLSearchParams(location.search),returnUrl=p.get('boost_return'),requested=p.get('boost_module'),nonce=p.get('boost_nonce');
+ if(!returnUrl||requested!==moduleId||!nonce||!mount)return;
+ let target;
+ try{target=new URL(returnUrl,location.href);if(target.origin!==location.origin)return}catch(_){return}
+ let box=document.getElementById('boostCompletionReturn');
+ if(!box){box=document.createElement('div');box.id='boostCompletionReturn';box.style.cssText='margin:20px 0;padding:20px;border:3px solid #16835b;border-radius:16px;background:#effff7;text-align:center';mount.appendChild(box)}
+ box.innerHTML='<h3 style="margin:0 0 8px">Activity Complete</h3><p style="margin:0 0 14px">Return to BOOST Pathways to save this completion and unlock your next step.</p><button type="button" id="boostSaveReturn" style="padding:13px 20px;border:0;border-radius:10px;background:#0d6248;color:#fff;font-weight:900;cursor:pointer">Save Completion & Return to BOOST</button>';
+ document.getElementById('boostSaveReturn').onclick=function(){target.searchParams.set('boost_complete',moduleId);target.searchParams.set('boost_nonce',nonce);location.assign(target.toString())};
+}
+
 </script></body></html>
