@@ -31,7 +31,7 @@ window.addEventListener('message',function(event){
      document.getElementById('skills')?.classList.remove('hidden');
      for(let i=0;i<currentSkills.length;i++){
        const item=saved.selfAssessment.find(x=>x.skill===currentSkills[i]);
-       if(!item)return;
+       if(!item)continue;
        const choice=[...document.querySelectorAll('input[type="radio"]')].find(x=>x.name==='sk'+i&&x.value===item.use);
        if(choice)choice.checked=true;
      }
