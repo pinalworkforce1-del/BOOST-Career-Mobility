@@ -345,6 +345,7 @@ function renderOccupationalValue(){
  $('currentValue').innerHTML=`<div class="adjCard"><b>${esc(current.title)}</b> ${currentPriority?'<span class="valueTag">IN-DEMAND CURRENT OCCUPATION</span>':'<span class="valueTag">CURRENT OCCUPATION</span>'}<div class="adjMeta">Job Zone ${current.jobZone||'—'} • ${esc(current.education||'Preparation varies')}${current.h3?' • '+esc(current.h3):''} • Interest Alignment ${interestDisplay(current)}</div>${currentPriority?'<div class="whyLine"><b>Employment First signal:</b> Your current occupation itself meets the BOOST H2/H3/+ opportunity filter. Explore direct employment before assuming retraining is necessary.</div>':''}</div>`;
  $('adjacencyResults').innerHTML=matches.length?matches.map(x=>`<div class="adjCard"><div class="adjScore">${Math.round(x.adj)}%</div><b>${esc(x.o.title)}</b><div><span class="valueTag">OCCUPATIONAL MATCH</span><span class="valueTag">${esc(x.o.h3)}</span></div><div class="adjMeta">Job Zone ${x.o.jobZone||'—'} • ${esc(x.o.education||'Preparation varies')}</div><div class="whyLine">Similar technical skill profile to your current/recent occupation and within one Job Zone.<br><b>Interest Alignment:</b> ${interestDisplay(x.o)}${hasInterestProfile()?' — preference signal only.':''}</div></div>`).join(''):`<div class="adjCard"><b>No close H2/H3/+ occupational neighbors surfaced.</b><div class="whyLine">That does not mean your experience has no value. Continue to transferable skills to see where broader capabilities may move with you.</div></div>`;
  box.classList.remove('hidden');
+ if(typeof window.boostRenderSavedCareerComparisons==='function')setTimeout(window.boostRenderSavedCareerComparisons,0);
 }
 function setupSearch(inputId,listId,hiddenId,onpick,filterH3=false){
  let inp=$(inputId),box=$(listId),help=$(inputId==='occSearch'?'occSearchHelp':'targetSearchHelp');
@@ -994,7 +995,7 @@ function boostOfferCompletion(moduleId,mount){
 }
 
 </script>
-<script src="assets/module3-parent-restore-v1.js?v=20261031-savedcareers4"></script>
+<script src="assets/module3-parent-restore-v1.js?v=20261031-savedcareers5"></script>
 <script id="boost-modern-rosie-ui">
 (function(){
  const avatar='https://pinalworkforce1-del.github.io/BOOST_Pathway-Portal/assets/images/rosie-chat-avatar.webp';
