@@ -6,6 +6,29 @@ function request(){window.parent.postMessage({type:'pinal-boost-module-restore-r
 window.addEventListener('message',function(event){
  if(event.source!==window.parent||!origins.has(event.origin)||event.data?.type!=='pinal-boost-module-restore'||event.data.module!=='module3')return;
  const info=event.data.state||{},saved=info.module3||{},start=saved.startingPoint||{};
+ // Module 1 interest scores must carry forward even when Module 3 has no saved starting occupation.
+ const profile=info.module1||{};
+ const scores=profile.scores||profile.interestScores||profile.riasecScores||{};
+ const scoreKeys=['R','I','A','S','E','C'];
+ let filled=0;
+ for(const letter of scoreKeys){
+   const raw=scores[letter]??scores[({R:'Realistic',I:'Investigative',A:'Artistic',S:'Social',E:'Enterprising',C:'Conventional'})[letter]];
+   const input=document.getElementById(letter);
+   if(input&&raw!==null&&raw!==undefined&&raw!==''&&Number.isFinite(Number(raw))){
+     input.value=String(raw);
+     input.dispatchEvent(new Event('input',{bubbles:true}));
+     filled++;
+   }
+ }
+ if(filled===scoreKeys.length){
+   const heading=document.querySelector('#loadSkills')?.parentElement;
+   if(heading&&!document.getElementById('pinalInterestCarryNote')){
+     const note=document.createElement('p');note.id='pinalInterestCarryNote';
+     note.style.cssText='color:#216246;font-size:.88rem;font-weight:700;margin:8px 0';
+     note.textContent='Your six O*NET interest scores were brought forward from Module 1.';
+     heading.insertBefore(note,document.getElementById('loadSkills'));
+   }
+ }
  if(!start.soc)return;
  try{
    const currentOcc=occs.find(o=>String(o.soc)===String(start.soc));
@@ -20,11 +43,6 @@ window.addEventListener('message',function(event){
    if(wage&&Number(saved.currentWage)>0)wage.value=String(saved.currentWage);
    const note=document.getElementById('workNote');
    if(note&&saved.workNote)note.value=String(saved.workNote);
-   const scores=info.module1?.scores||{};
-   for(const letter of ['R','I','A','S','E','C']){
-     const input=document.getElementById(letter);
-     if(input&&Number.isFinite(Number(scores[letter])))input.value=String(scores[letter]);
-   }
    renderOccupationalValue();
    if(Array.isArray(saved.selfAssessment)&&saved.selfAssessment.length){
      renderSkillCards();
