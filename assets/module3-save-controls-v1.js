@@ -17,11 +17,19 @@ function install(){
  note.textContent='Saves your career mobility results to your BOOST account before returning to the map. Printing a PDF does not save your module completion.';
  row.insertBefore(note,row.querySelector('p.sub')||null);
  button.addEventListener('click',()=>{
-  button.disabled=true;button.textContent='Requesting secure save…';
+  button.disabled=true;button.textContent='Saving to BOOST…';
   send({type:'pinal-boost-module3-finish-request'});
-  setTimeout(()=>{if(document.contains(button)){button.disabled=false;button.textContent='✓ SAVE RESULTS & RETURN TO BOOST'}},10000);
+  setTimeout(()=>{if(document.contains(button)&&button.disabled){button.disabled=false;button.textContent='RETRY SAVE RESULTS & RETURN TO BOOST';document.getElementById('boostModule3SaveHelp').textContent='Save confirmation was not received. Stay on this page and retry; your completion has not been verified.'}},12000);
  });
 }
+window.addEventListener('message',event=>{
+ if(event.source!==window.parent||!TRUSTED.has(event.origin)||event.data?.type!=='pinal-boost-module3-save-status')return;
+ const b=document.getElementById('boostModule3SaveBottom'),note=document.getElementById('boostModule3SaveHelp');
+ if(!b||!note)return;
+ if(event.data.status==='saving'){b.disabled=true;b.textContent='Saving to BOOST…';note.textContent='Verifying your completion in your BOOST account.'}
+ else if(event.data.status==='error'){b.disabled=false;b.textContent='RETRY SAVE RESULTS & RETURN TO BOOST';note.textContent=event.data.message||'Save not confirmed. Please retry.'}
+ else if(event.data.status==='saved'){b.textContent='✓ SAVED TO BOOST';note.textContent='Your Module 3 completion is confirmed.'}
+});
 window.addEventListener('message',event=>{
  if(event.source!==window.parent||!TRUSTED.has(event.origin)||event.data?.type!=='pinal-boost-module3-collect')return;
  const requestId=event.data.requestId;
