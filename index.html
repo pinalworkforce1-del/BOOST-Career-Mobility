@@ -158,6 +158,11 @@ label{display:block;font-size:.8rem;font-weight:800;margin-bottom:4px}input,sele
 <div id="currentValue"></div><div id="adjacencyResults" class="adjGrid"></div>
 <p class="whyLine"><b>Why this matters:</b> A new career interest does not automatically mean new training is needed. Existing occupational skills may already support direct employment or a nearby career move.</p>
 </div>
+<section id="boostSavedCareerComparisons" style="margin:20px 0;padding:18px;border:2px solid #2a9d8f;border-radius:14px;background:#f4faf9">
+ <div class="sectionKicker">Your saved career exploration</div>
+ <h3>How do the careers you explored compare?</h3>
+ <p id="boostCareerComparisonStatus" class="muted">Select your current or most recent occupation above. If you've already selected one and your saved careers do not appear, BOOST is checking the connection to your saved career research.</p>
+</section>
 <h3>Bring forward your O*NET Interest Profiler scores from Module 1</h3><p class="muted"><b>Interest is a preference signal—not a readiness score.</b> These scores help BOOST show which kinds of work may appeal to you. They do not determine whether you are qualified, whether an occupation is in demand, or whether training is needed.</p><div class="g6"><div><label>Realistic</label><input id="R" type="number" min="0" value=""></div><div><label>Investigative</label><input id="I" type="number" min="0" value=""></div><div><label>Artistic</label><input id="A" type="number" min="0" value=""></div><div><label>Social</label><input id="S" type="number" min="0" value=""></div><div><label>Enterprising</label><input id="E" type="number" min="0" value=""></div><div><label>Conventional</label><input id="C" type="number" min="0" value=""></div></div>
 <button id="loadSkills" class="btn" type="button">SHOW MY TRANSFERABLE SKILLS</button></section>
 <section id="skills" class="panel noPrint hidden"><div class="step">Transferable Experience</div><h2>Which skills have you actually used?</h2>
@@ -994,7 +999,7 @@ function boostOfferCompletion(moduleId,mount){
 }
 
 </script>
-<script src="assets/module3-parent-restore-v1.js?v=20261031-diagnostic1"></script>
+<script src="assets/module3-parent-restore-v1.js?v=20261031-visible-handoff1"></script>
 <script id="boost-modern-rosie-ui">
 (function(){
  const avatar='https://pinalworkforce1-del.github.io/BOOST_Pathway-Portal/assets/images/rosie-chat-avatar.webp';
