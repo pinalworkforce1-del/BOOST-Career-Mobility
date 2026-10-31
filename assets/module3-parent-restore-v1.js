@@ -6,7 +6,7 @@ let carryState=null;
 function showSavedCareerComparisons(){
  const host=document.getElementById('occupationalValue');
  if(!host||!carryState||!current)return;
- const selected=Array.isArray(carryState.module1?.selected)?carryState.module1.selected:[];
+ const selected=[carryState.module1?.selected,carryState.module1?.careers,carryState.module2?.careers].find(x=>Array.isArray(x)&&x.length)||[];
  let panel=document.getElementById('boostSavedCareerComparisons');
  if(!panel){panel=document.createElement('section');panel.id='boostSavedCareerComparisons';panel.style.cssText='margin-top:20px;padding:18px;border:2px solid #2a9d8f;border-radius:14px;background:#f4faf9';host.insertAdjacentElement('afterend',panel)}
  const escText=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -28,6 +28,7 @@ function showSavedCareerComparisons(){
  }).join('');
  panel.innerHTML='<div class="sectionKicker">Your saved career exploration</div><h3>How do the careers you explored compare?</h3><p class="muted">Compare your current experience with careers already saved in Discover and Reality Check. A new title might be more appealing, but a lower occupational match can mean a larger transition. Equally, work you already know may offer growth without a career change.</p><div class="adjGrid">'+(cards||'<p>Your saved Module 1 careers will appear here once they are available.</p>')+'</div><p class="whyLine"><b>Worth discussing with Rosie:</b> What is motivating a change—interest, wages, advancement, schedule, or something else? If your current work fits your interests and offers advancement, what would a new career improve? These comparisons invite exploration, not a recommendation to stay or leave.</p>';
 }
+window.boostShowSavedCareerComparisons=showSavedCareerComparisons;
 function request(){window.parent.postMessage({type:'pinal-boost-module-restore-request',module:'module3'},'*')}
 window.addEventListener('message',function(event){
  if(event.source!==window.parent||!origins.has(event.origin)||event.data?.type!=='pinal-boost-module-restore'||event.data.module!=='module3')return;
