@@ -935,7 +935,7 @@ function makeReport(){
  $('reportSection').scrollIntoView({behavior:'smooth'});
 }
 
-setupSearch('occSearch','occSuggest','occSoc',o=>{current=o;$('selectedOcc').innerHTML=`<b>Selected:</b> ${esc(o.title)} <span class="badge">O*NET ${esc(o.soc)}</span><span class="badge">Job Zone ${o.jobZone||'—'}</span>`;$('selectedOcc').classList.remove('hidden');renderOccupationalValue();window.boostShowSavedCareerComparisons?.()});
+setupSearch('occSearch','occSuggest','occSoc',o=>{current=o;$('selectedOcc').innerHTML=`<b>Selected:</b> ${esc(o.title)} <span class="badge">O*NET ${esc(o.soc)}</span><span class="badge">Job Zone ${o.jobZone||'—'}</span>`;$('selectedOcc').classList.remove('hidden');renderOccupationalValue();if(window.boostShowSavedCareerComparisons){window.boostShowSavedCareerComparisons()}else{const diagnostic=$('boostCareerComparisonStatus');if(diagnostic)diagnostic.textContent='The saved-career comparison script did not initialize. Your Module 1 and Module 2 records have not been changed.'}});
 setupSearch('targetSearch','targetSuggest','targetSoc',o=>{target=o},false);
 $('loadSkills').onclick=()=>{if(!current){alert('Choose your current or most recent occupation first.');return}renderSkillCards();$('skills').classList.remove('hidden');$('skills').scrollIntoView({behavior:'smooth'})};
 $('continueBtn').onclick=()=>{$('decision').classList.remove('hidden');$('decision').scrollIntoView({behavior:'smooth'})};
