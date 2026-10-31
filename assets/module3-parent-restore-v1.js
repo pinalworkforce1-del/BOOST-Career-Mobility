@@ -3,6 +3,11 @@
 if(window===window.top)return;
 const origins=new Set(['https://pinal.boostpathways.org','https://pinalworkforce1-del.github.io']);
 let carryState=null;
+// Read-only access for Module 3's concise career mobility report.
+window.boostModule3SavedCareerRecords=()=>({
+ careers:[carryState?.module1?.selected,carryState?.module1?.careers,carryState?.module2?.careers].find(a=>Array.isArray(a)&&a.length)||[],
+ validationBySoc:carryState?.module2?.validationBySoc||{}
+});
 function showSavedCareerComparisons(){
  const host=document.getElementById('occupationalValue');
  if(!host)return;
@@ -37,6 +42,7 @@ window.addEventListener('message',function(event){
  if(event.source!==window.parent||!origins.has(event.origin)||event.data?.type!=='pinal-boost-module-restore'||event.data.module!=='module3')return;
  const info=event.data.state||{},saved=info.module3||{},start=saved.startingPoint||{};
  carryState=info;
+ window.dispatchEvent(new Event('boost-module3-saved-careers-ready'));
  setTimeout(showSavedCareerComparisons,60);
  // Module 1 interest scores must carry forward even when Module 3 has no saved starting occupation.
  const profile=info.module1||{};
