@@ -930,7 +930,7 @@ function makeReport(){
  $('reportSection').scrollIntoView({behavior:'smooth'});
 }
 
-setupSearch('occSearch','occSuggest','occSoc',o=>{current=o;$('selectedOcc').innerHTML=`<b>Selected:</b> ${esc(o.title)} <span class="badge">O*NET ${esc(o.soc)}</span><span class="badge">Job Zone ${o.jobZone||'—'}</span>`;$('selectedOcc').classList.remove('hidden');renderOccupationalValue()});
+setupSearch('occSearch','occSuggest','occSoc',o=>{current=o;$('selectedOcc').innerHTML=`<b>Selected:</b> ${esc(o.title)} <span class="badge">O*NET ${esc(o.soc)}</span><span class="badge">Job Zone ${o.jobZone||'—'}</span>`;$('selectedOcc').classList.remove('hidden');renderOccupationalValue();window.boostShowSavedCareerComparisons?.()});
 setupSearch('targetSearch','targetSuggest','targetSoc',o=>{target=o},false);
 $('loadSkills').onclick=()=>{if(!current){alert('Choose your current or most recent occupation first.');return}renderSkillCards();$('skills').classList.remove('hidden');$('skills').scrollIntoView({behavior:'smooth'})};
 $('continueBtn').onclick=()=>{$('decision').classList.remove('hidden');$('decision').scrollIntoView({behavior:'smooth'})};
@@ -994,7 +994,7 @@ function boostOfferCompletion(moduleId,mount){
 }
 
 </script>
-<script src="assets/module3-parent-restore-v1.js?v=20261031-restore-good-1"></script>
+<script src="assets/module3-parent-restore-v1.js?v=20261031-picker-linked"></script>
 <script id="boost-modern-rosie-ui">
 (function(){
  const avatar='https://pinalworkforce1-del.github.io/BOOST_Pathway-Portal/assets/images/rosie-chat-avatar.webp';
