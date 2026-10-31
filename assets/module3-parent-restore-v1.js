@@ -92,4 +92,10 @@ window.addEventListener('message',function(event){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',request,{once:true});else request();
 ['occSearch','R','I','A','S','E','C'].forEach(id=>document.getElementById(id)?.addEventListener('change',()=>setTimeout(showSavedCareerComparisons,50)));
 document.getElementById('occSearch')?.addEventListener('input',()=>setTimeout(showSavedCareerComparisons,200));
+ // The first-visit occupation picker updates currentValue without necessarily firing change.
+ // Observe that rendered selection rather than depending on a saved Module 3 starting point.
+ const currentValue=document.getElementById('currentValue');
+ if(currentValue)new MutationObserver(()=>showSavedCareerComparisons()).observe(currentValue,{childList:true,subtree:true,characterData:true});
+ document.getElementById('occSuggest')?.addEventListener('click',()=>setTimeout(showSavedCareerComparisons,80));
+
 })();
