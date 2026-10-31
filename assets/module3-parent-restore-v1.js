@@ -6,9 +6,7 @@ let carryState=null;
 function showSavedCareerComparisons(){
  const host=document.getElementById('occupationalValue');
  if(!host||!carryState||!current)return;
- const fromModule1=[carryState.module1?.selected,carryState.module1?.careers,carryState.module1?.savedCareers].find(x=>Array.isArray(x)&&x.length)||[];
- const fromModule2=Array.isArray(carryState.module2?.careers)?carryState.module2.careers:[];
- const selected=fromModule1.length?fromModule1:fromModule2.length?fromModule2:Object.keys(carryState.module2?.validationBySoc||{}).map(soc=>({soc,title:occs.find(o=>String(o.soc).split('.')[0]===soc.split('.')[0])?.title||''}));
+ const selected=Array.isArray(carryState.module1?.selected)?carryState.module1.selected:[];
  let panel=document.getElementById('boostSavedCareerComparisons');
  if(!panel){panel=document.createElement('section');panel.id='boostSavedCareerComparisons';panel.style.cssText='margin-top:20px;padding:18px;border:2px solid #2a9d8f;border-radius:14px;background:#f4faf9';host.insertAdjacentElement('afterend',panel)}
  const escText=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -26,11 +24,10 @@ function showSavedCareerComparisons(){
   const prepDelta=Number(o.jobZone||0)-Number(current.jobZone||0);
   const prep='Job Zone '+(o.jobZone||'—')+(prepDelta>0?' • higher preparation level':prepDelta<0?' • lower preparation level':' • similar preparation level');
   const researched=[v.prepNote,v.employerSupportNote,v.lifeNote].filter(Boolean).map(x=>escText(x)).join(' • ');
-  return '<article class="adjCard"><b>'+escText(title)+'</b> <span class="valueTag">EXPLORED IN MODULES 1–2</span><div class="adjMeta">Occupational compatibility: <b>'+pct(similarity)+'</b> (technical similarity and Job Zone, not qualification)<br>O*NET interest alignment: <b>'+(interestValue===null?'Not calculated':pct(interestValue))+'</b> '+(baseline===null?'':'• Current occupation: '+pct(baseline))+'<br>'+escText(prep)+'</div><div class="whyLine"><b>'+escText(interestNote)+'.</b> '+(priorityH(o)?'This career shows employment opportunities in your region. ':'Regional opportunity should be checked independently. ')+(researched?'Module 2 notes: '+researched+'. ':'')+'A strong interest match does not establish skills, credentials or hiring readiness.</div></article>';
+  return '<article class="adjCard"><b>'+escText(title)+'</b> <span class="valueTag">EXPLORED IN MODULES 1–2</span><div class="adjMeta">Occupational compatibility: <b>'+pct(similarity)+'</b> (technical similarity and Job Zone, not qualification)<br>O*NET interest alignment: <b>'+(interestValue===null?'Not calculated':pct(interestValue))+'</b> '+(baseline===null?'':'• Current occupation: '+pct(baseline))+'<br>'+escText(prep)+'</div><div class="whyLine"><b>'+escText(interestNote)+'.</b> '+(priorityH(o)?'Meets BOOST regional opportunity screen. ':'Regional opportunity should be checked independently. ')+(researched?'Module 2 notes: '+researched+'. ':'')+'A strong interest match does not establish skills, credentials or hiring readiness.</div></article>';
  }).join('');
- panel.innerHTML='<div class="sectionKicker">Your saved career exploration</div><h3>How do the careers you explored compare?</h3><p class="muted">Compare your current experience with careers already saved in Discover and Reality Check. A new title might be more appealing, but a lower occupational match can mean a larger transition. Equally, work you already know may offer growth without a career change.</p><div class="adjGrid">'+(cards||'<p>Interest scores were received, but no saved career selections were included in the Module 1 or Module 2 handoff. Your earlier selections have not been modified. Reopen Module 1 or ask your coach to verify the saved occupation records.</p>')+'</div><p class="whyLine"><b>Worth discussing with Rosie:</b> What is motivating a change—interest, wages, advancement, schedule, or something else? If your current work fits your interests and offers advancement, what would a new career improve? These comparisons invite exploration, not a recommendation to stay or leave.</p>';
+ panel.innerHTML='<div class="sectionKicker">Your saved career exploration</div><h3>How do the careers you explored compare?</h3><p class="muted">Compare your current experience with careers already saved in Discover and Reality Check. A new title might be more appealing, but a lower occupational match can mean a larger transition. Equally, work you already know may offer growth without a career change.</p><div class="adjGrid">'+(cards||'<p>Your saved Module 1 careers will appear here once they are available.</p>')+'</div><p class="whyLine"><b>Worth discussing with Rosie:</b> What is motivating a change—interest, wages, advancement, schedule, or something else? If your current work fits your interests and offers advancement, what would a new career improve? These comparisons invite exploration, not a recommendation to stay or leave.</p>';
 }
-window.boostRenderSavedCareerComparisons=showSavedCareerComparisons;
 function request(){window.parent.postMessage({type:'pinal-boost-module-restore-request',module:'module3'},'*')}
 window.addEventListener('message',function(event){
  if(event.source!==window.parent||!origins.has(event.origin)||event.data?.type!=='pinal-boost-module-restore'||event.data.module!=='module3')return;
@@ -95,10 +92,4 @@ window.addEventListener('message',function(event){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',request,{once:true});else request();
 ['occSearch','R','I','A','S','E','C'].forEach(id=>document.getElementById(id)?.addEventListener('change',()=>setTimeout(showSavedCareerComparisons,50)));
 document.getElementById('occSearch')?.addEventListener('input',()=>setTimeout(showSavedCareerComparisons,200));
- // The first-visit occupation picker updates currentValue without necessarily firing change.
- // Observe that rendered selection rather than depending on a saved Module 3 starting point.
- const currentValue=document.getElementById('currentValue');
- if(currentValue)new MutationObserver(()=>showSavedCareerComparisons()).observe(currentValue,{childList:true,subtree:true,characterData:true});
- document.getElementById('occSuggest')?.addEventListener('click',()=>setTimeout(showSavedCareerComparisons,80));
-
 })();
