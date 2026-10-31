@@ -655,6 +655,7 @@ function renderOpen(){
  $('path').innerHTML='';
  wireExplain();
  wireComparisonDelegation();
+ window.boostAutoIncludeSaved?.();
  updateComparisonUI();
  $('reportSection').classList.add('hidden');
 }
@@ -708,7 +709,7 @@ function renderSelectedCareerAnalysis(o){
 }
 function targetMap(){
  if(!target){alert('Choose the career you want to map first.');return}
- mode='target';path=[];selectedSocs.clear();surfacedSocs.clear();$('results').classList.remove('hidden');$('resultTitle').textContent='Test a Career I’m Considering';renderSelectedCareerAnalysis(target);wireComparisonDelegation();$('results').querySelector('.info').innerHTML=`<b>Your career idea stays on the table.</b> BOOST is not deciding whether you can or cannot pursue <b>${esc(target.title)}</b>. It is helping you make an informed decision. Your selected career will be compared with your interests, transferable skills, current experience, preparation, and regional labor-market opportunity. BOOST may also show other strong pathways worth considering. Those alternatives are <b>not steps you must take to reach your selected career</b>—they are options to compare before deciding what you want to explore further with your Career Coach.`;
+ mode='target';path=[];selectedSocs.clear();surfacedSocs.clear();window.boostAutoIncludeSaved?.();$('results').classList.remove('hidden');$('resultTitle').textContent='Test a Career I’m Considering';renderSelectedCareerAnalysis(target);wireComparisonDelegation();$('results').querySelector('.info').innerHTML=`<b>Your career idea stays on the table.</b> BOOST is not deciding whether you can or cannot pursue <b>${esc(target.title)}</b>. It is helping you make an informed decision. Your selected career will be compared with your interests, transferable skills, current experience, preparation, and regional labor-market opportunity. BOOST may also show other strong pathways worth considering. Those alternatives are <b>not steps you must take to reach your selected career</b>—they are options to compare before deciding what you want to explore further with your Career Coach.`;
  let sc=score(target),direct=access(target,current.jobZone||2,0);
  if(direct&&oppPass(target)){markSurfaced([target]);
    target={...target,...sc};
@@ -873,6 +874,7 @@ function testedCareerStoryBlock(o){
 }
 
 function makeReport(){
+ if(window.boostConciseReport?.())return;
  if(!current){alert('Choose your current or most recent occupation first.');return}
  const base=currentWageBaseline();
  const currentInterest=hasInterestProfile()?interest(current):null;
@@ -999,7 +1001,8 @@ function boostOfferCompletion(moduleId,mount){
 }
 
 </script>
-<script src="assets/module3-parent-restore-v1.js?v=20261031-opportunity-copy"></script>
+<script src="assets/module3-concise-report-v1.js?v=20261031-first"></script>
+<script src="assets/module3-parent-restore-v1.js?v=20261031-reportfirst"></script>
 <script id="boost-modern-rosie-ui">
 (function(){
  const avatar='https://pinalworkforce1-del.github.io/BOOST_Pathway-Portal/assets/images/rosie-chat-avatar.webp';
